@@ -1,0 +1,51 @@
+.sideblock {
+    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    text-shadow: 0 1px rgba(255,255,255,.8);  
+    background: #EAF3FF; 
+    border: 1px solid #ddd;      
+    color: #333;
+    padding: 20px;
+    width: 100%;
+    height:100%;
+    float: left;
+    position: relative;
+    text-align: center; 
+    margin-left: auto;
+    margin-right: auto;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0; 
+} 
+
+.h3 {
+    color: #E5E5E5;
+    text-shadow: none;
+    background: linear-gradient(to bottom,  #014c93 0%,#87c3ff 100%);
+    font-size: 20px;
+    font-weight: normal;
+    padding: 20px;
+    margin: -20px -20px 20px -20px;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0; 		
+}
+
+.element {
+    border-top: 1px solid #ddd; 
+    padding-top: 10px; 
+    padding-bottom: 10px; 
+    font: 12px Arial, Helvetica;
+}
+
+.button {
+    border-radius: 4px; padding: 8px 20px; margin: 20px 0 0 0;
+    background-color: #008cba;
+    color: white;
+    transition: background-color 300ms ease-out;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    text-decoration: none;
+    text-align: center;
+    font-size: 1rem;
+}
