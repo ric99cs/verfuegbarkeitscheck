@@ -1,4 +1,26 @@
 <?php
+/**
+* A function for retrieving the Kölner Phonetik value of a string
+*
+* As described at http://de.wikipedia.org/wiki/Kölner_Phonetik
+* Based on Hans Joachim Postel: Die Kölner Phonetik.
+* Ein Verfahren zur Identifizierung von Personennamen auf der
+* Grundlage der Gestaltanalyse.
+* in: IBM-Nachrichten, 19. Jahrgang, 1969, S. 925-931
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* @package phonetics
+* @version 1.0
+* @link http://www.einfachmarke.de
+* @license GPL 3.0 <http://www.gnu.org/licenses/>
+* @copyright  2008 by einfachmarke.de
+* @author Nicolas Zimmer <nicolas dot zimmer at einfachmarke.de>
+*/
+
 header('Content-Type: text/html; charset=UTF8');
 
 function cologne_phon($word) {
