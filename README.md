@@ -64,6 +64,6 @@ Folgende Suchen können zum Testen der verschiedenen Anschlussvarianten und zum 
 - Stephanstr. 45, Dresden
 - Lange Str. 17, Pirna
 
-Für die Ähnlichkeitssuche kann mit der falschen Schreibweise der Namen geprüft werden. So wird bspw. statt Heynathsstr. auch eine Heinatstraße gefunden. Statt der Carl-Zeiß-Str. 3 wird auch die Karl-Zeiss-Str. gefunden, oder ganz extrem statt der Großenhainer Str. 32 wird auch eine Grosenheinerstr. gefunden.
+Für die Ähnlichkeitssuche kann mit der falschen Schreibweise der Namen geprüft werden. So wird bspw. statt Heynathsstr. auch eine Heinatstraße gefunden. Statt der Carl-Zeiß-Str. 3 wird auch die Karl-Zeiss-Str. gefunden, oder ganz extrem statt der Großenhainer Str. 32 wird auch eine Grosenheinerstr. gefunden. Die Suche ist nicht perfekt, liefert aber für die allermeisten Anfragen passende Ergebnisse.
 
 
