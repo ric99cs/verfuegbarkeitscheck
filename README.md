@@ -1,6 +1,5 @@
 # Verfügbarkeitscheck
 ## Dient der Prüfung der Verfügbarkeit verschiedener Dienste eines lokalen Kabelnetzbetreibers durch Integration in eine Wordpress-Seite
-
 Die Kunden eines lokalen Kabelnetzbetreibers mit unterschiedlichsten Anlagentypen sollen die Möglichkeit haben, auf der Internetseite des Betreibers die Verfügbarkeit von Kabelinternetanschlüssen, digitalen Zusatzprodukten und Kabelanschlüssen allgemein zu prüfen.
 
 Die Seite verwendet ein Wordpress-CMS zur Erstellung der Inhalte. Da dieses nur bedingt tauglich für eine solche Abfrage ist, wurde nach einer Möglichkeit gesucht, dies über eine externe Datenbankabfrage zu lösen.
@@ -17,13 +16,11 @@ Folgende Anforderungen gelten hierbei:
 
 
 ## Test der Funktion
-
-Die Funktion kann auf der Seite des Anbieters unter https://schott.tv/verfuegbarkeitscheck/ getestet werden.
+Die Funktion kann auf der Seite des Anbieters unter https://schott.tv/verfuegbarkeitscheck/ getestet werden. Der Code der Hauptfunktion findet sich in [verfuegbarkeit.php](/verfuegbarkeit.php).
 
 
 ## Umsetzung der einzelnen Punkte
 ### Ähnlichkeitssuche
-
 In ersten Versionen des Verfügbarkeitschecks hat sich gezeigt, dass gerade bei den Straßennamen häufig Schreibfehler zu finden waren und der Nutzer folglich kein Ergebnis erhalten hat. Somit sollte eine einfache Ähnlichkeitssuche eingebaut werden, welche in Verbindung mit Hausnummer und Ort jeweils ein einzelnes Ergebnis liefern soll. Es ist nicht vorgesehen, eine Auswahlliste bei der Entsprechung mehrerer Straßennamen anzubieten.
 
 In der Haupttabelle werden die Daten zu den einzelnen Anschriften gespeichert. Neben den spezifischen Daten zu den Objekten werden der Straßenname (bspw. Großenhainer Str.), die Hausnummer mit einem eventuellen Zusatz in einer separaten Spalte und der Ort gespeichert.
@@ -36,3 +33,10 @@ Wird auch hier keine Entsprechung gefunden, dann wird als letztes versucht, übe
 
 
 ### Verfügbarkeit der einzelnen Produkte
+In der Anschriftentabelle gibt es drei Felder KAA, KAI, KAD für die einzelnen Produkttypen. Über Flags in den einzelnen Feldern wird definiert, was an der gesuchten Anschrift angeboten wird. So ist erkennbar, ob bspw. ein Kabelanschluß oder eine Satanlage vorhanden ist, ob Internet möglich ist und ob es digitale Zusatzprodukte gibt. 
+
+Gleichzeitig steht in zwei weiteren Spalten, welche Produktvorschläge für das angefragte Objekt möglich sind. In einer weiteren Tabelle wird dann über eine Matrix der endgültige Produktvorschlag festgelegt. 
+
+Über die Felder KAA, KAD, KAI wird auch festgelegt, welches Ergebnis auf der Webseite angezeigt wird. Hierzu ist zu den jeweiligen Flags in der Datenbank das Ergebnis in Form eines HTML-Schnipsels gespeichert. Beim Abruf wird dies dann in die Seite mit eingebunden.
+
+### 
