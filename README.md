@@ -39,4 +39,17 @@ Gleichzeitig steht in zwei weiteren Spalten, welche Produktvorschläge für das 
 
 Über die Felder KAA, KAD, KAI wird auch festgelegt, welches Ergebnis auf der Webseite angezeigt wird. Hierzu ist zu den jeweiligen Flags in der Datenbank das Ergebnis in Form eines HTML-Schnipsels gespeichert. Beim Abruf wird dies dann in die Seite mit eingebunden.
 
-### 
+### Anzeige eines Produktvorschlages
+In der Datenbank sind mehrere Tabellen gespeichert, aus welchen sich der jeweils gültige Produktvorschlag ableiten lässt. Für den Produktvorschlag selber werden auch einzelne HTML-Schnipsel nacheinander zusammengesetzt. Mittels einer m:n-Beziehungstabelle lassen sich die einzelnen "Blöcke" für verschiedene Produktvorschläge verwenden.
+
+Die Beziehungen zwischen den einzelnen Tabellen lässt sich in etwa so darstellen:
+
+|tbl:matrix|
+------------
+|ergebnis  |
+
+
+|tbl:matrix| -> 1:1 -> |tbl:promotion_blocks|  -> 1:n -> |tbl:blockselector| -> n:1 -> |tbl:blocks|
+------------           ----------------------            -------------------           ------------
+
+<table><tbody><tr><th>tbl:matrix</th></tr><tr><td>ergebnis</td></tr></tbody></table>-> 1:1 ->
