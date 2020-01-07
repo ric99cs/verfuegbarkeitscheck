@@ -44,12 +44,5 @@ In der Datenbank sind mehrere Tabellen gespeichert, aus welchen sich der jeweils
 
 Die Beziehungen zwischen den einzelnen Tabellen lässt sich in etwa so darstellen:
 
-|tbl:matrix|
-------------
-|ergebnis  |
 
 
-|tbl:matrix| -> 1:1 -> |tbl:promotion_blocks|  -> 1:n -> |tbl:blockselector| -> n:1 -> |tbl:blocks|
-------------           ----------------------            -------------------           ------------
-
-<table><tbody><tr><th>tbl:matrix</th></tr><tr><td>ergebnis</td></tr></tbody></table>-> 1:1 ->
