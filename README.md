@@ -44,5 +44,26 @@ In der Datenbank sind mehrere Tabellen gespeichert, aus welchen sich der jeweils
 
 Die Beziehungen zwischen den einzelnen Tabellen lässt sich in etwa so darstellen:
 
+![](erd_promotion_tables.png?raw=true)
+
+Der Produktvorschlagsblock wird auf der rechten Seite in einem `<div>` mit separatem CSS angezeigt. Dazu werden aus der Datenbank über ein SELECT die einzelnen Blöcke in der festgelegten Reihenfolge geladen und das Ergebnis der Abfrage in einer Schleife ausgegeben. Durch die Verwendung der HTML-Schnipsel lassen sich verschiedenste Elemente darstellen.
+
+### Integration in das CMS
+Die Wordpress-Installation ist so konfiguriert, dass sie php-Inhalte ausführen kann. Der Einstieg in den Verfügbarkeitscheck ist eine Seite mit einem Formular, welches die benötigten Felder für eine GET-Anfrage enthält. Hier werden auch die Orte als Auswahlliste festgelegt. (In früheren Varianten konnte die Postleitzahl angegeben werden, auch das hat öfter zu Falschabfragen geführt, wenn die Nutzer nicht die korrekte Postleitzahl wussten)
+
+Nach der Abfrage wird geprüft, ob der Straßenname Ziffern enthält. In dem Fall wird eine entsprechende Fehlermeldung erzeugt. Ist der Verfügbarkeitscheck durchgelaufen, dann wird eine Email mit allen relevanten Daten an den Seitenbetreiber gesendet.
+
+### Testfälle
+Folgende Suchen können zum Testen der verschiedenen Anschlussvarianten und zum Testen der Ähnlichkeitssuche verwendet werden:
+- Am Tummelsgrund 20, Dresden
+- Heynathsstr. 10, Dresden
+- Meißner Landstr. 139, Dresden
+- Gostritzer Weg 4, Dresden
+- Tiergartenstr. 34, Dresden
+- Hertelstr. 25, Dresden
+- Stephanstr. 45, Dresden
+- Lange Str. 17, Pirna
+
+Für die Ähnlichkeitssuche kann mit der falschen Schreibweise der Namen geprüft werden. So wird bspw. statt Heynathsstr. auch eine Heinatstraße gefunden. Statt der Carl-Zeiß-Str. 3 wird auch die Karl-Zeiss-Str. gefunden, oder ganz extrem statt der Großenhainer Str. 32 wird auch eine Grosenheinerstr. gefunden.
 
 
