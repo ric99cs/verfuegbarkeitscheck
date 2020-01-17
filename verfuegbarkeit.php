@@ -1,6 +1,6 @@
 <?php
   header('Content-Type: text/html; charset=UTF8');
-  $path = '/xxx/verfuegbarkeit/include/';
+  $path = '/var/www/vhosts/web430.server39.configcenter.info/httpdocs/schott/wordpress/wp-content/themes/hathor/verfuegbarkeit/include/';
   set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
   include 'colognephon.php';
@@ -44,11 +44,17 @@
       $oldstring=array('ß','ä','ö','ü',' ','%','-');
       $newstring=array('ss','ae','oe','ue','','','');
       
+      if ($zusatz == "") {
+        $zusatzquery = " AND Zusatz = \"\"";
+      } else {
+        $zusatzquery = " AND Zusatz like \"%". $zusatz."%\"";
+      }
+
       //Erste Abfrage nach genauem Namen und Regex
       $querystring= "SELECT ID, KAA, KAD, KAI, Strasse, Hausnummer, Zusatz, Ort, Gebuehr, Status  FROM anschrift ";
       $querystring.="WHERE (MATCH (RegExStrasse) AGAINST (\"%". str_replace($oldstring,$newstring,$straße)."%\") ";
       $querystring.="OR  Strasse like \"%". $straße."%\") ";
-      $querystring.="AND Hausnummer=". $hausnummer." AND Zusatz like \"%". $zusatz."%\" AND Ort like \"%".$ort."%\"";
+      $querystring.="AND Hausnummer=". $hausnummer.$zusatzquery." AND Ort like \"%".$ort."%\"";
       $allqueries .= $querystring."\r\n\r\n";
 
       $query=mysql_query($querystring) or die(mysql_error());
@@ -56,7 +62,7 @@
         //Wenn kein Treffer, dann Abfrage mit Kölner Phonetik
         $querystring= "SELECT ID, KAA, KAD, KAI, Strasse, Hausnummer, Zusatz, Ort, Gebuehr, Status  FROM anschrift ";
         $querystring.="WHERE ColognePhon LIKE \"".cologne_phon(str_replace($oldstring,$newstring,$straße))."\" ";
-        $querystring.="AND Hausnummer=". $hausnummer." AND Zusatz like \"%". $zusatz."%\" AND Ort like \"%".$ort."%\"";
+        $querystring.="AND Hausnummer=". $hausnummer.$zusatzquery." AND Ort like \"%".$ort."%\"";
         $allqueries .= $querystring."\r\n\r\n";
         $query=mysql_query($querystring) or die(mysql_error());
 
@@ -64,7 +70,7 @@
           //Wenn auch da kein Treffer, dann Abfrage über Soundex-Code
           $querystring= "SELECT ID, KAA, KAD, KAI, Strasse, Hausnummer, Zusatz, Ort, Gebuehr, Status  FROM anschrift ";
           $querystring.="WHERE Soundex like \"".soundex($straße)."\" ";
-          $querystring.="AND Hausnummer=". $hausnummer." AND Zusatz like \"%". $zusatz."%\" AND Ort like \"%".$ort."%\"";
+          $querystring.="AND Hausnummer=". $hausnummer.$zusatzquery." AND Ort like \"%".$ort."%\"";
           $allqueries .= $querystring."\r\n\r\n";
           $query=mysql_query($querystring) or die(mysql_error());
         }
