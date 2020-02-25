@@ -41,40 +41,45 @@
       //die(mysql_error());
     } else {
 
+      $streetfound = [];
+      $querystage = "";
       $oldstring=array('ß','ä','ö','ü',' ','%','-');
       $newstring=array('ss','ae','oe','ue','','','');
       
       if ($zusatz == "") {
-        $zusatzquery = " AND Zusatz = \"\"";
+        $zusatzquery = " AND CONV(HEX(zusatz),16,8)=0";
       } else {
         $zusatzquery = " AND Zusatz like \"%". $zusatz."%\"";
       }
 
-      //Erste Abfrage nach genauem Namen und Regex
-      $querystring= "SELECT ID, KAA, KAD, KAI, Strasse, Hausnummer, Zusatz, Ort, Gebuehr, Status  FROM anschrift ";
-      $querystring.="WHERE (MATCH (RegExStrasse) AGAINST (\"%". str_replace($oldstring,$newstring,$straße)."%\") ";
-      $querystring.="OR  Strasse like \"%". $straße."%\") ";
-      $querystring.="AND Hausnummer=". $hausnummer.$zusatzquery." AND Ort like \"%".$ort."%\"";
-      $allqueries .= $querystring."\r\n\r\n";
+      while (1) {
 
-      $query=mysql_query($querystring) or die(mysql_error());
-      if (mysql_num_rows($query)<1) {
+        //Erste Abfrage nach genauem Namen und Regex
+        $streetfound = checkSimpleName($straße, $hausnummer, $zusatzquery, $ort);
+        $querystage = "Simple";
+        if ($streetfound[1]==TRUE) break;
+        
         //Wenn kein Treffer, dann Abfrage mit Kölner Phonetik
-        $querystring= "SELECT ID, KAA, KAD, KAI, Strasse, Hausnummer, Zusatz, Ort, Gebuehr, Status  FROM anschrift ";
-        $querystring.="WHERE ColognePhon LIKE \"".cologne_phon(str_replace($oldstring,$newstring,$straße))."\" ";
-        $querystring.="AND Hausnummer=". $hausnummer.$zusatzquery." AND Ort like \"%".$ort."%\"";
-        $allqueries .= $querystring."\r\n\r\n";
-        $query=mysql_query($querystring) or die(mysql_error());
+        $streetfound = checkColognePhonetic($straße, $hausnummer, $zusatzquery, $ort);
+        $querystage = "ColognePhonetic";
+        if ($streetfound[1]==TRUE) break;
 
-        if (mysql_num_rows($query)<1) {
-          //Wenn auch da kein Treffer, dann Abfrage über Soundex-Code
-          $querystring= "SELECT ID, KAA, KAD, KAI, Strasse, Hausnummer, Zusatz, Ort, Gebuehr, Status  FROM anschrift ";
-          $querystring.="WHERE Soundex like \"".soundex($straße)."\" ";
-          $querystring.="AND Hausnummer=". $hausnummer.$zusatzquery." AND Ort like \"%".$ort."%\"";
-          $allqueries .= $querystring."\r\n\r\n";
-          $query=mysql_query($querystring) or die(mysql_error());
-        }
+        //Wenn auch da kein Treffer, dann Abfrage über Soundex-Code
+        $streetfound = checkSoundex($straße, $hausnummer, $zusatzquery, $ort);
+        $querystage = "Soundex";
+        if ($streetfound[1]==TRUE) break;
+
+        //letzter Versuch mit Levensthein-Distanz
+        $streetfound = checkLevenshtein($straße, $hausnummer, $zusatzquery, $ort);
+        $querystage = "Levenshtein";
+        if ($streetfound[1]==TRUE) break;
+        
+        $streetfound = [NULL,FALSE];
+        $querystage = "Not found";
+        break;
       }
+
+      $query = $streetfound[0];
 
       if (mysql_num_rows($query) != 0) {
           $searchaddress=mysql_result($query,0,4)." ".mysql_result($query,0,5).mysql_result($query,0,6).", ".mysql_result($query,0,7);
@@ -170,7 +175,7 @@
           include("sideblock.php");
           $streetstring=$_GET['Straße']." ".$_GET['Hausnummer'].$_GET['Zusatz'].", ".$_GET['Ort'];
           $body="Folgende Suchanfrage wurde am ".$datum.", um ".$uhrzeit." Uhr von der IP ".$newip." getätigt:\r\n\r\n";
-          $body.="Query:\r\n".$allqueries."\r\n\r\nStraße: ".$streetstring."\r\n\r\nSuchergebnis: ".$searchaddress."\r\n\r\n";
+          $body.="Query:\r\n".$allqueries."\r\n\r\nStraße: ".$streetstring."\r\n\r\nSuchergebnis: ".$searchaddress."\r\n\r\nQuerystage: ".$querystage."\r\n\r\n";
           $body.="Daten aus GET-Variablenübergabe:\r\nStraße: ".mysql_real_escape_string($_GET['Straße'])."\r\nHausnummer: ".mysql_real_escape_string($_GET['Hausnummer']);
           $body.="\r\nZusatz: ".mysql_real_escape_string($_GET['Zusatz'])."\r\nPLZ: ".mysql_real_escape_string($_GET['PLZ'])."\r\nOrt: ".mysql_real_escape_string($_GET['Ort']);
           $body.="\r\n\r\nErgebnis:\r\nEchostring: ".$echoString."\r\nKAA/KAD/KAI: ".$KAA."/".$KAD."/".$KAI;
